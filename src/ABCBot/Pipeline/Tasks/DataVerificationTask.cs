@@ -48,11 +48,19 @@ namespace ABCBot.Pipeline.Tasks
                 return PipelineProcessingResult.Success();
             } else {
                 var messageBuilder = new StringBuilder();
+                var msgSignatureBuilder = new StringBuilder();
                 messageBuilder.AppendLine("The following fields are missing:");
+                msgSignatureBuilder.AppendLine("To correct/provide the missing fields, please respond with the proper formatting:")
                 foreach (var field in missingFields) {
                     messageBuilder.Append("- ");
                     messageBuilder.AppendLine(field);
+                    msgSignatureBuilder.Append("`/abc ");
+                    msgSignatureBuilder.Append(field);
+                    msgSignatureBuilder.AppendLine("[FIELD VALUE]`");
                 }
+
+                messageBuilder.AppendLine("");
+                messageBuilder.Append(msgSignatureBuilder);
 
                 return PipelineProcessingResult.Failure(messageBuilder.ToString());
             }
